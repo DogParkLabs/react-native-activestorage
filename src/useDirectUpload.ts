@@ -9,10 +9,11 @@ interface OnSuccessParams {
 }
 
 export type Params = {
+  headers?: object;
   onSuccess?: (params: OnSuccessParams) => void;
 }
 
-const useDirectUpload = ({ onSuccess }: Params = {}) => {
+const useDirectUpload = ({ onSuccess, headers }: Params = {}) => {
   const { directUploadsUrl } = useConfig();
   const [uploads, setUploads] = useState<DirectUploadResult[]>([]);
 
@@ -24,7 +25,7 @@ const useDirectUpload = ({ onSuccess }: Params = {}) => {
     async (files: File[]) => {
       const signedIds = await Promise.all(
         files.map((file) =>
-          directUpload({ file, directUploadsUrl, onStatusChange: handleFileUploadChange })
+          directUpload({ file, directUploadsUrl, headers, onStatusChange: handleFileUploadChange })
         )
       );
 
