@@ -53,7 +53,7 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
         .then((resp) => {
           const status = resp.info().status;
           if (status >= 200 && status < 400) {
-            handleStatusUpdate({ status: 'success' });
+            handleStatusUpdate({ status: 'success', signed_id: blobData.signed_id });
           } else {
             handleStatusUpdate({ status: 'error', error: new Error('Response not success') });
           }

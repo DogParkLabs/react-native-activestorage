@@ -29,6 +29,7 @@ export interface DirectUploadResultError extends DirectUploadResultBase {
 
 export interface DirectUploadResultSuccess extends DirectUploadResultBase {
   status: 'success';
+  signed_id: string;
 }
 
 export interface DirectUploadResultWaiting extends DirectUploadResultBase {
