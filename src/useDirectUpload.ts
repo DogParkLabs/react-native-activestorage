@@ -45,6 +45,7 @@ const useDirectUpload = ({ onSuccess, headers }: Params = {}) => {
     upload,
     uploads,
     uploading,
+    resetUploads: () => setUploads([])
   };
 };
 
