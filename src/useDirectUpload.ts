@@ -9,12 +9,11 @@ interface OnSuccessParams {
 }
 
 export type Params = {
-  headers?: object;
   onSuccess?: (params: OnSuccessParams) => void;
 }
 
-const useDirectUpload = ({ onSuccess, headers }: Params = {}) => {
-  const { directUploadsUrl } = useConfig();
+const useDirectUpload = ({ onSuccess }: Params = {}) => {
+  const { directUploadsUrl, headers } = useConfig();
   const [uploads, setUploads] = useState<DirectUploadResult[]>([]);
 
   const handleFileUploadChange = useCallback((fileUpload: DirectUploadResult) => {

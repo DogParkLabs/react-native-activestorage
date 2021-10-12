@@ -18,7 +18,7 @@ yarn add react-native-activestorage rn-fetch-blob
 import { ActiveStorageProvider } from 'react-native-activestorage'
 
 const App = () => (
-  <ActiveStorageProvider host="https://localhost:4000">
+  <ActiveStorageProvider host="https://localhost:4000" headers={ { 'X-Header-Name': true } }>
     <Navigation />
   </ActiveStorageProvider>
 )
