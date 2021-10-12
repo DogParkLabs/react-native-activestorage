@@ -44,6 +44,8 @@ const useDirectUpload = ({ onSuccess }: Params = {}) => {
     upload,
     uploads,
     isUploading,
+    resetUploads: () => setUploads([]),
+    removeUpload: (id: number) => setUploads(uploads.filter(u => u.id !== id))
   };
 };
 
