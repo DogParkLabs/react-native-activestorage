@@ -36,7 +36,7 @@ const Upload = () => {
     // Do something;
   }
 
-  const { upload, uploading, uploads } = useDirectUpload({ onSuccess });
+  const { upload, isUploading, uploads } = useDirectUpload({ onSuccess });
 
   const onUploadButtonClick = async () => {
     const files = await showPicker();
@@ -65,7 +65,7 @@ import { DirectUpload } from 'react-native-activestorage'
 
 const Upload = () => (
   <DirectUpload onSuccess={({ signedIds }) => console.warn({ signedIds })}>
-    {({ upload, uploading, uploads }) => (
+    {({ upload, isUploading, uploads }) => (
       <View>
         <View onClick={() => showPicker((files) => upload(files))}>
           <Text>Upload</Text>

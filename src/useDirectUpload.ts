@@ -38,13 +38,12 @@ const useDirectUpload = ({ onSuccess }: Params = {}) => {
     [handleFileUploadChange, onSuccess]
   );
 
-  const uploading = useMemo(() => uploads.some((upload) => upload.status === 'uploading'), [uploads]);
+  const isUploading = useMemo(() => uploads.some((upload) => upload.status === 'uploading'), [uploads]);
 
   return {
     upload,
     uploads,
-    uploading,
-    resetUploads: () => setUploads([])
+    isUploading,
   };
 };
 
