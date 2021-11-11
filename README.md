@@ -36,7 +36,11 @@ const Upload = () => {
     // Do something;
   }
 
-  const { upload, isUploading, uploads } = useDirectUpload({ onSuccess });
+  const onError = () => {
+    // Do something;
+  }
+
+  const { upload, isUploading, uploads } = useDirectUpload({ onSuccess, onError });
 
   const onUploadButtonClick = async () => {
     const files = await showPicker();
