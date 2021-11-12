@@ -8,7 +8,13 @@ export interface File {
     path: string;
     metadata?: FileMetadata;
 }
-export declare type DirectUploadResultStatus = 'success' | 'uploading' | 'error' | 'waiting' | 'canceled';
+export declare enum DirectUploadResultStatus {
+    success = "success",
+    uploading = "uploading",
+    error = "error",
+    waiting = "waiting",
+    canceled = "canceled"
+}
 export interface DirectUploadResultBase {
     id: number;
     status: DirectUploadResultStatus;
@@ -16,21 +22,21 @@ export interface DirectUploadResultBase {
     cancel: () => void;
 }
 export interface DirectUploadResultError extends DirectUploadResultBase {
-    status: 'error';
+    status: DirectUploadResultStatus.error;
     error: Error;
 }
 export interface DirectUploadResultSuccess extends DirectUploadResultBase {
-    status: 'success';
+    status: DirectUploadResultStatus.success;
     signed_id: string;
 }
 export interface DirectUploadResultWaiting extends DirectUploadResultBase {
-    status: 'waiting';
+    status: DirectUploadResultStatus.waiting;
 }
 export interface DirectUploadResultCanceled extends DirectUploadResultBase {
-    status: 'canceled';
+    status: DirectUploadResultStatus.canceled;
 }
 export interface DirectUploadResultUploading extends DirectUploadResultBase {
-    status: 'uploading';
+    status: DirectUploadResultStatus.uploading;
     progress: number;
     totalBytes: number;
     uploadedBytes: number;
