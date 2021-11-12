@@ -1,6 +1,7 @@
 import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import createBlobRecord from './createBlobRecord';
-import { File, DirectUploadResult, HandleStatusUpdateData, DirectUploadResultStatus } from '../types';
+import { File, DirectUploadResult, HandleStatusUpdateData } from '../types';
+import { DirectUploadResultStatus } from './enums';
 
 let id = 0;
 

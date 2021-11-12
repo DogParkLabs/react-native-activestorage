@@ -1,3 +1,5 @@
+import { DirectUploadResultStatus } from "lib/enums";
+
 export type FileMetadata = { [key: string]: any };
 
 export interface File {
@@ -6,14 +8,6 @@ export interface File {
   type: string;
   path: string;
   metadata?: FileMetadata;
-}
-
-export enum DirectUploadResultStatus {
-  success = 'success',
-  uploading = 'uploading',
-  error = 'error',
-  waiting = 'waiting',
-  canceled = 'canceled'
 }
 
 export interface DirectUploadResultBase {

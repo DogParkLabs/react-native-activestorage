@@ -1,8 +1,9 @@
 import { useMemo, useState, useCallback } from 'react';
-import { File, DirectUploadResult, DirectUploadResultSuccess, DirectUploadResultStatus } from './types';
+import { File, DirectUploadResult, DirectUploadResultSuccess } from './types';
 import directUpload from './lib/directUpload';
 import insertOrReplace from './lib/insertOrReplace';
 import useConfig from './useConfig';
+import { DirectUploadResultStatus } from './lib/enums';
 
 interface OnSuccessParams {
   signedIds: string[];
