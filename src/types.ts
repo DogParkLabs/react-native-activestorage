@@ -1,3 +1,5 @@
+import { DirectUploadResultStatus } from "lib/enums";
+
 export type FileMetadata = { [key: string]: any };
 
 export interface File {
@@ -8,13 +10,6 @@ export interface File {
   metadata?: FileMetadata;
 }
 
-export type DirectUploadResultStatus =
-  | 'success'
-  | 'uploading'
-  | 'error'
-  | 'waiting'
-  | 'canceled';
-
 export interface DirectUploadResultBase {
   id: number;
   status: DirectUploadResultStatus;
@@ -23,24 +18,25 @@ export interface DirectUploadResultBase {
 }
 
 export interface DirectUploadResultError extends DirectUploadResultBase {
-  status: 'error';
+  status: DirectUploadResultStatus.error;
   error: Error;
 }
 
 export interface DirectUploadResultSuccess extends DirectUploadResultBase {
-  status: 'success';
+  status: DirectUploadResultStatus.success;
+  signed_id: string;
 }
 
 export interface DirectUploadResultWaiting extends DirectUploadResultBase {
-  status: 'waiting';
+  status: DirectUploadResultStatus.waiting;
 }
 
 export interface DirectUploadResultCanceled extends DirectUploadResultBase {
-  status: 'canceled';
+  status: DirectUploadResultStatus.canceled;
 }
 
 export interface DirectUploadResultUploading extends DirectUploadResultBase {
-  status: 'uploading';
+  status: DirectUploadResultStatus.uploading;
   progress: number;
   totalBytes: number;
   uploadedBytes: number;

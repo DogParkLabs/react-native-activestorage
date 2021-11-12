@@ -1,6 +1,7 @@
 import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import createBlobRecord from './createBlobRecord';
 import { File, DirectUploadResult, HandleStatusUpdateData } from '../types';
+import { DirectUploadResultStatus } from './enums';
 
 let id = 0;
 
@@ -29,7 +30,7 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
     onStatusChange({ ...data, id: taskId, cancel: handleCancel, file });
   };
 
-  handleStatusUpdate({ status: 'waiting' });
+  handleStatusUpdate({ status: DirectUploadResultStatus.waiting });
 
   return new Promise<string | void>(async (resolve) => {
     try {
@@ -48,29 +49,29 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
       task
         .uploadProgress({ interval: 250 }, (uploadedBytes, totalBytes) => {
           const progress = (uploadedBytes / totalBytes) * 100;
-          handleStatusUpdate({ status: 'uploading', progress, totalBytes, uploadedBytes });
+          handleStatusUpdate({ status: DirectUploadResultStatus.uploading, progress, totalBytes, uploadedBytes });
         })
         .then((resp) => {
           const status = resp.info().status;
           if (status >= 200 && status < 400) {
-            handleStatusUpdate({ status: 'success' });
+            handleStatusUpdate({ status: DirectUploadResultStatus.success, signed_id: blobData.signed_id });
           } else {
-            handleStatusUpdate({ status: 'error', error: new Error('Response not success') });
+            handleStatusUpdate({ status: DirectUploadResultStatus.error, error: new Error('Response not success') });
           }
 
           resolve(blobData.signed_id);
         })
         .catch((err) => {
           if (canceled) {
-            handleStatusUpdate({ status: 'canceled' });
+            handleStatusUpdate({ status: DirectUploadResultStatus.canceled });
           } else {
-            handleStatusUpdate({ status: 'error', error: err });
+            handleStatusUpdate({ status: DirectUploadResultStatus.error, error: err });
           }
 
           resolve();
         });
     } catch (err) {
-      handleStatusUpdate({ status: 'error', error: err });
+      handleStatusUpdate({ status: DirectUploadResultStatus.error, error: err });
       return resolve();
     }
   });

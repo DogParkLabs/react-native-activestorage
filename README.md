@@ -18,7 +18,7 @@ yarn add react-native-activestorage rn-fetch-blob
 import { ActiveStorageProvider } from 'react-native-activestorage'
 
 const App = () => (
-  <ActiveStorageProvider host="https://localhost:4000">
+  <ActiveStorageProvider host="https://localhost:4000" headers={ { 'X-Header-Name': true } }>
     <Navigation />
   </ActiveStorageProvider>
 )
@@ -36,7 +36,11 @@ const Upload = () => {
     // Do something;
   }
 
-  const { upload, uploading, uploads } = useDirectUpload({ onSuccess });
+  const onError = () => {
+    // Do something;
+  }
+
+  const { upload, isUploading, uploads } = useDirectUpload({ onSuccess, onError });
 
   const onUploadButtonClick = async () => {
     const files = await showPicker();
@@ -65,7 +69,7 @@ import { DirectUpload } from 'react-native-activestorage'
 
 const Upload = () => (
   <DirectUpload onSuccess={({ signedIds }) => console.warn({ signedIds })}>
-    {({ upload, uploading, uploads }) => (
+    {({ upload, isUploading, uploads }) => (
       <View>
         <View onClick={() => showPicker((files) => upload(files))}>
           <Text>Upload</Text>

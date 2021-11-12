@@ -1,8 +1,9 @@
 import { useMemo, useState, useCallback } from 'react';
-import { File, DirectUploadResult } from './types';
+import { File, DirectUploadResult, DirectUploadResultSuccess } from './types';
 import directUpload from './lib/directUpload';
 import insertOrReplace from './lib/insertOrReplace';
 import useConfig from './useConfig';
+import { DirectUploadResultStatus } from './lib/enums';
 
 interface OnSuccessParams {
   signedIds: string[];
@@ -10,10 +11,11 @@ interface OnSuccessParams {
 
 export type Params = {
   onSuccess?: (params: OnSuccessParams) => void;
+  onError?: () => void;
 }
 
-const useDirectUpload = ({ onSuccess }: Params = {}) => {
-  const { directUploadsUrl } = useConfig();
+const useDirectUpload = ({ onSuccess, onError }: Params = {}) => {
+  const { directUploadsUrl, headers } = useConfig();
   const [uploads, setUploads] = useState<DirectUploadResult[]>([]);
 
   const handleFileUploadChange = useCallback((fileUpload: DirectUploadResult) => {
@@ -24,7 +26,7 @@ const useDirectUpload = ({ onSuccess }: Params = {}) => {
     async (files: File[]) => {
       const signedIds = await Promise.all(
         files.map((file) =>
-          directUpload({ file, directUploadsUrl, onStatusChange: handleFileUploadChange })
+          directUpload({ file, directUploadsUrl, headers, onStatusChange: handleFileUploadChange })
         )
       );
 
@@ -33,17 +35,29 @@ const useDirectUpload = ({ onSuccess }: Params = {}) => {
         onSuccess && onSuccess({ signedIds: validIds });
       }
 
+      if (files.length > validIds.length) {
+        onError && onError();
+      }
+
       return { signedIds: validIds }
     },
-    [handleFileUploadChange, onSuccess]
+    [handleFileUploadChange, onSuccess, onError]
   );
 
-  const uploading = useMemo(() => uploads.some((upload) => upload.status === 'uploading'), [uploads]);
+  const isUploading = useMemo(() => (
+    uploads.some((upload) => upload.status === DirectUploadResultStatus.uploading)
+  ), [uploads]);
+  const successfulUploads = useMemo(() => (
+    uploads.filter((upload) => upload.status === DirectUploadResultStatus.success) as DirectUploadResultSuccess[]
+  ), [uploads]);
 
   return {
     upload,
     uploads,
-    uploading,
+    isUploading,
+    successfulUploads,
+    resetUploads: () => setUploads([]),
+    removeUpload: (id: number) => setUploads(uploads.filter(u => u.id !== id))
   };
 };
 
