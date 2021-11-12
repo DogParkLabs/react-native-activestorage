@@ -1,5 +1,5 @@
 import { useMemo, useState, useCallback } from 'react';
-import { File, DirectUploadResult, DirectUploadResultSuccess } from './types';
+import { File, DirectUploadResult, DirectUploadResultSuccess, DirectUploadResultStatus } from './types';
 import directUpload from './lib/directUpload';
 import insertOrReplace from './lib/insertOrReplace';
 import useConfig from './useConfig';
@@ -43,9 +43,11 @@ const useDirectUpload = ({ onSuccess, onError }: Params = {}) => {
     [handleFileUploadChange, onSuccess, onError]
   );
 
-  const isUploading = useMemo(() => uploads.some((upload) => upload.status === 'uploading'), [uploads]);
+  const isUploading = useMemo(() => (
+    uploads.some((upload) => upload.status === DirectUploadResultStatus.uploading)
+  ), [uploads]);
   const successfulUploads = useMemo(() => (
-    uploads.filter((upload) => upload.status === 'success') as DirectUploadResultSuccess[]
+    uploads.filter((upload) => upload.status === DirectUploadResultStatus.success) as DirectUploadResultSuccess[]
   ), [uploads]);
 
   return {
