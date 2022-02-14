@@ -1,4 +1,4 @@
-import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
+import ReactNativeBlobUtil, { FetchBlobResponse, StatefulPromise } from 'react-native-blob-util';
 import createBlobRecord from './createBlobRecord';
 import { File, DirectUploadResult, HandleStatusUpdateData } from '../types';
 import { DirectUploadResultStatus } from './enums';
@@ -42,9 +42,9 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
 
       const { url, headers: uploadHeaders } = blobData.direct_upload;
 
-      const fileData = RNFetchBlob.wrap(file.path);
+      const fileData = ReactNativeBlobUtil.wrap(file.path);
 
-      task = RNFetchBlob.fetch('PUT', url, uploadHeaders, fileData);
+      task = ReactNativeBlobUtil.fetch('PUT', url, uploadHeaders, fileData);
 
       task
         .uploadProgress({ interval: 250 }, (uploadedBytes, totalBytes) => {
