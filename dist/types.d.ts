@@ -2,6 +2,10 @@ import { DirectUploadResultStatus } from "lib/enums";
 export declare type FileMetadata = {
     [key: string]: any;
 };
+export declare type BlobData = {
+    signed_id: string;
+    [k: string]: any;
+};
 export interface File {
     name: string;
     size: number;
@@ -21,7 +25,7 @@ export interface DirectUploadResultError extends DirectUploadResultBase {
 }
 export interface DirectUploadResultSuccess extends DirectUploadResultBase {
     status: DirectUploadResultStatus.success;
-    signed_id: string;
+    blobData: BlobData;
 }
 export interface DirectUploadResultWaiting extends DirectUploadResultBase {
     status: DirectUploadResultStatus.waiting;

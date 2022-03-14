@@ -1,6 +1,6 @@
 import ReactNativeBlobUtil, { FetchBlobResponse, StatefulPromise } from 'react-native-blob-util';
 import createBlobRecord from './createBlobRecord';
-import { File, DirectUploadResult, HandleStatusUpdateData } from '../types';
+import { File, DirectUploadResult, HandleStatusUpdateData, BlobData } from '../types';
 import { DirectUploadResultStatus } from './enums';
 
 let id = 0;
@@ -32,7 +32,7 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
 
   handleStatusUpdate({ status: DirectUploadResultStatus.waiting });
 
-  return new Promise<string | void>(async (resolve) => {
+  return new Promise<BlobData | void>(async (resolve) => {
     try {
       const blobData = await createBlobRecord({
         directUploadsUrl,
@@ -40,11 +40,9 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
         headers,
       });
 
-      const { url, headers: uploadHeaders } = blobData.direct_upload;
-
       const fileData = ReactNativeBlobUtil.wrap(file.path);
 
-      task = ReactNativeBlobUtil.fetch('PUT', url, uploadHeaders, fileData);
+      task = ReactNativeBlobUtil.fetch('PUT', blobData.direct_upload.url, blobData.direct_upload.headers, fileData);
 
       task
         .uploadProgress({ interval: 250 }, (uploadedBytes, totalBytes) => {
@@ -54,12 +52,12 @@ const directUpload = ({ directUploadsUrl, file, headers, onStatusChange }: Direc
         .then((resp) => {
           const status = resp.info().status;
           if (status >= 200 && status < 400) {
-            handleStatusUpdate({ status: DirectUploadResultStatus.success, signed_id: blobData.signed_id });
+            handleStatusUpdate({ status: DirectUploadResultStatus.success, blobData });
           } else {
             handleStatusUpdate({ status: DirectUploadResultStatus.error, error: new Error('Response not success') });
           }
 
-          resolve(blobData.signed_id);
+          resolve(blobData);
         })
         .catch((err) => {
           if (canceled) {
