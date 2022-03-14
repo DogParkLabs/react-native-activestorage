@@ -26,7 +26,12 @@ const useDirectUpload = ({ onSuccess, onError }: Params = {}) => {
     async (files: File[]) => {
       const signedIds = await Promise.all(
         files.map((file) =>
-          directUpload({ file, directUploadsUrl, headers, onStatusChange: handleFileUploadChange })
+          directUpload({
+             file,
+            directUploadsUrl,
+            headers,
+            onStatusChange: handleFileUploadChange
+          }).then(bd => bd && bd.signed_id)
         )
       );
 
