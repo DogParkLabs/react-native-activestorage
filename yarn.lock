@@ -2856,10 +2856,10 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-react-native-blob-util@0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.14.0.tgz#60c7e61b574bff8acc8c661f967aa350ceb2cf2f"
-  integrity sha512-cr2Tw5VdvUijreMdnBYmsBVQvxwiLWKe37UG8dPnPJ8sQ8rZJQo9IfpfPho+w/8fWrKqCJAoTSLpHI1ar059ew==
+react-native-blob-util@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.15.0.tgz#b75755e0169d7e3aed865a835c38fe584d2aa56a"
+  integrity sha512-hXUoh1eHe25sREQkblpXGQKe1rr8uE1QgEVQIBeF4MbCfscPOCB6YYlsQ9PvJp0dXHCE/H1g//WvkM7wQukJeQ==
   dependencies:
     base-64 "0.1.0"
     glob "^7.1.6"
