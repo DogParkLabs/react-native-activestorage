@@ -7,7 +7,9 @@ export declare type Params = {
     onError?: () => void;
 };
 declare const useDirectUpload: ({ onSuccess, onError }?: Params) => {
-    upload: (files: File[]) => Promise<{
+    upload: (files: File[], { batchSize }?: {
+        batchSize?: number | undefined;
+    }) => Promise<{
         signedIds: string[];
     }>;
     uploads: DirectUploadResult[];

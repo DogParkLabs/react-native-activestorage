@@ -23,17 +23,23 @@ const useDirectUpload = ({ onSuccess, onError }: Params = {}) => {
   }, []);
 
   const upload = useCallback(
-    async (files: File[]) => {
-      const signedIds = await Promise.all(
-        files.map((file) =>
-          directUpload({
-             file,
-            directUploadsUrl,
-            headers,
-            onStatusChange: handleFileUploadChange
-          }).then(bd => bd && bd.signed_id)
-        )
-      );
+    async (files: File[], { batchSize = 3 }: { batchSize?: number } = {}) => {
+      const signedIds: (string | void)[] = [];
+
+      for (let i = 0; i < files.length; i += batchSize) {
+        const batch = files.slice(i, i + batchSize);
+        const batchResults = await Promise.all(
+          batch.map((file) =>
+            directUpload({
+              file,
+              directUploadsUrl,
+              headers,
+              onStatusChange: handleFileUploadChange
+            }).then(bd => bd && bd.signed_id)
+          )
+        );
+        signedIds.push(...batchResults);
+      }
 
       const validIds = signedIds.filter((it) => !!it) as string[];
       if (validIds.length > 0) {
